@@ -33,7 +33,7 @@ const Home = () => {
 					{todos.map((todos, index) => (
 						<li className="task" key={index} onMouseEnter={() => setMouseHover(index)}
 							onMouseLeave={() => setMouseHover(null)}>
-							{todos}
+							{todos} 
 							{mouseHover === index && (
 								<span
 									style={{ cursor: "pointer" }}
