@@ -24,7 +24,7 @@ const Home = () => {
 	};
 
 	const getInfo = () => {
-		fetch ('https://playground.4geeks.com/apis/fake/todos/user/melodycn',{
+		fetch ('https://playground.4geeks.com/apis/fake/todos/user/melodycn', {
 			method: "GET",
 		  })
 		  .then(resp => {
@@ -32,10 +32,9 @@ const Home = () => {
 			  console.log(resp.status); // El código de estado 200, 300, 400, etc.
 			  if (resp.status === 404){
 				console.log("creando nuevo usuario")
-				createUser();
-			  }
+				createUser() } ;
 			  console.log(resp.text()); // Intentará devolver el resultado exacto como string
-			  return resp.json(); // Intentará parsear el resultado a JSON y retornará una promesa donde puedes usar .then para seguir con la lógica
+			  return resp.json() // Intentará parsear el resultado a JSON y retornará una promesa donde puedes usar .then para seguir con la lógica
 		  })
 		  .then(data => {
 			  // Aquí es donde debe comenzar tu código después de que finalice la búsqueda
@@ -67,7 +66,7 @@ const Home = () => {
         // Manejo de errores
         console.log(error);
     });
-	}
+	}}
 
 	return (
 
@@ -96,6 +95,6 @@ const Home = () => {
 		</div>
 		
 	);
-};
+}
 
-export default Home;
+export default Home 
