@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 //include images into your bundle
 import rigoImage from "../../img/rigo-baby.jpg";
@@ -9,19 +9,6 @@ const Home = () => {
 	const [inputValue, setInputValue] = useState ("");
 	const [todos, setTodos] = useState ([]);
 	const [mouseHover, setMouseHover] = useState(null);
-
-	const addTask = (e) => {
-		if (e.key === "Enter") {
-			setTodos(todos.concat([inputValue]));
-			setInputValue("");
-			setMouseHover(null)
-		}
-	};
-
-	const deleteTask = (index) => {
-		const newList = todos.filter((_, i) => i !== index);
-		setTodos(newList);
-	};
 
 	const getInfo = () => {
 		fetch ('https://playground.4geeks.com/apis/fake/todos/user/melodycn', {
@@ -68,10 +55,86 @@ const Home = () => {
     });
 	}}
 
+	const updateInfo = () =>{
+		fetch('https://playground.4geeks.com/apis/fake/todos/user/melodycn', {
+			method: "POST",
+			body: JSON.stringify(todos),
+			headers: {
+			  "Content-Type": "application/json"
+			}
+		  })
+		  .then(resp => {
+			  // console.log(resp.ok); // will be true if the response is successfull
+			  // console.log(resp.status); // the status code = 200 or code = 400 etc.
+			  // console.log(resp.text()); // will try return the exact result as string
+			  return resp.json();        
+		  })
+		  .then(data => {
+			  //here is where your code should start after the fetch finishes
+			  console.log(data); //this will print on the console the exact object received from the server
+		  })
+		  .catch(error => {
+			  //error handling
+			  console.log(error);
+		  });
+		
+	  };
+	  const deleteInfo = () => {
+		fetch('https://playground.4geeks.com/apis/fake/todos/user/melodycn', {
+			method: "DELETE",
+			body: JSON.stringify(todos),
+			headers: {
+			  "Content-Type": "application/json"
+			}
+		  })
+		  .then(resp => {
+			  // console.log(resp.ok); // will be true if the response is successfull
+			  console.log(resp.status); 
+			  if (resp.status === 200){
+				console.log("creando nuevo usuario")
+				createUser()
+				setTodos([])};// the status code = 200 or code = 400 etc.
+			  // console.log(resp.text()); // will try return the exact result as string
+					 
+		  })
+		  .then(data => {
+			  //here is where your code should start after the fetch finishes
+			  console.log(data); //this will print on the console the exact object received from the server
+		  })
+		  .catch(error => {
+			  //error handling
+			  console.log(error);
+		  });
+		  
+		
+	  };
+
+	useEffect( () => {     //useEffect con funcion dentro que haga un fetch GET de la info del server----- POST para crear nuevo usuario
+		getInfo();
+	  }, [])
+	
+	  useEffect( () => {
+		updateInfo();
+		}, [todos])
+	  
+
+		const addTask = (e) => {
+			if (e.key === "Enter") {
+				setTodos(todos.concat([inputValue]));
+				setInputValue("");
+				setMouseHover(null)
+			}
+		};
+	
+		const deleteTask = (index) => {
+			const newList = todos.filter((_, i) => i !== index);
+			setTodos(newList);
+		};
+		
 	return (
 
 		<div className="container-fluid text-center col-6 contenedor">
-			<h1 class="display-3">My todos </h1>
+			<h1 className="display-3">My todos </h1>
 			<input type="text" className="input form-control" value={inputValue} placeholder="What needs to be done?"
 					onKeyDown={addTask} onChange={(e) => { setInputValue(e.target.value) }} />
 				<ul className="todo-list">
@@ -91,6 +154,7 @@ const Home = () => {
 						</li>
 					))}
 				</ul>
+				<button className="btn btn-danger" onClick={deleteInfo}>Delete everything</button>
 			<div className="fw-light" >{todos.length == 0 ? 'No tasks, add a task' : todos.length + ' tasks left'}</div>
 		</div>
 		
