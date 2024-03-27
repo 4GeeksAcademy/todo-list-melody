@@ -94,7 +94,7 @@ const Home = () => {
 		const addTask = (e) => {
 			if (e.key === "Enter") {
 				handleSubmit();
-				setTodos(todos.concat([inputValue]));
+				setTodos(todos.concat(({label: inputValue, done: false})));
 				setInputValue("");
 				setMouseHover(null)
 			}
@@ -122,7 +122,7 @@ const Home = () => {
 							key={index} 
 							onMouseEnter={() => setMouseHover(index)}
 							onMouseLeave={() => setMouseHover(null)}>
-							{todos} 
+							{todos.label} 
 							{mouseHover === index && (
 								<span
 									style={{ cursor: "pointer" }}
